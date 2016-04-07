@@ -22,7 +22,7 @@ public class BitArray
 		if(n < 0 || n >= numBits)
 			throw new IndexOutOfBoundsException("Index " + n);
 		
-		else
+		else //test
 		{
 			int m = 1;
 			m = m << (n%32);
@@ -43,7 +43,7 @@ public class BitArray
 		else
 		{
 			int m = 1;
-			m = m << (n%32);
+			m = m << (31-(n%32));
 			b[n/32] = b[n/32] | m;
 		}
 	}
