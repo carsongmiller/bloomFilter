@@ -14,7 +14,7 @@ public class BitArray
 			throw new IllegalArgumentException();
 		
 		else //read words from basic.txt, run through hash functions, and set bits in b[] accordingly
-			b = new int[(int)Math.ceil(M/32)];
+			b = new int[(int)Math.ceil(M/32.0)];
 	}
 	
 	public boolean get(int n) //returns value of bit in bloom filter at index 1
@@ -22,10 +22,28 @@ public class BitArray
 		if(n < 0 || n >= numBits)
 			throw new IndexOutOfBoundsException("Index " + n);
 		
-		else//test 3
+		else
 		{
 			int m = 1;
-			m = m << (n%32);
+			m = m << (31-(n%32));
+			if((m & b[n/32]) != 0)
+				return true;
+			else
+				return false;
+		}
+	}
+	
+	
+	
+	public boolean get(int n, String w) //returns value of bit in bloom filter at index 1
+	{
+		if(n < 0 || n >= numBits)
+			throw new IndexOutOfBoundsException("Index: " + n + " Word: " + w);
+		
+		else
+		{
+			int m = 1;
+			m = m << (31-(n%32));
 			if((m & b[n/32]) != 0)
 				return true;
 			else
@@ -44,6 +62,7 @@ public class BitArray
 		{
 			int m = 1;
 			m = m << (31-(n%32));
+			//System.out.println(n + "\t" + m);
 			b[n/32] = b[n/32] | m;
 		}
 	}
@@ -58,18 +77,10 @@ public class BitArray
 		else
 		{
 			int m = 1;
-			m = m << (n%32);
+			m = m << (31-(n%32));
 			b[n/32] = b[n/32] | m;
 		}
 		
 		return n;
 	}
-	
-	
-	
-	
-	public void generateBitArray()
-	{
-		
-	}	
 }
