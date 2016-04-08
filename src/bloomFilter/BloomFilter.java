@@ -104,6 +104,7 @@ public class BloomFilter
 	
 	public void add(String w)
 	{
+		int a = 0, b = 0, c = 0, d = 0, e = 0, f = 0;
 		//run word through hash functions and set appropriate bits in b[]
 		try
 		{
@@ -112,12 +113,61 @@ public class BloomFilter
 			bitArray.set(Math.abs(h3(w)));		//hash 3
 			bitArray.set(Math.abs(h4(w)));		//hash 4
 			bitArray.set(Math.abs(h5(w)));		//hash 5
-			bitArray.set(Math.abs(h6(w)));		//hash 5
+			bitArray.set(Math.abs(h6(w)));		//hash 6
+			
+//			System.out.println(w);
+//				System.out.println("h1: " + Math.abs(h1(w)) + "  " + bitArray.get(Math.abs(h1(w))));
+//				System.out.println("h2: " + Math.abs(h2(w)) + "  " + bitArray.get(Math.abs(h2(w))));
+//				System.out.println("h3: " + Math.abs(h3(w)) + "  " + bitArray.get(Math.abs(h3(w))));
+//				System.out.println("h4: " + Math.abs(h4(w)) + "  " + bitArray.get(Math.abs(h4(w))));
+//				System.out.println("h5: " + Math.abs(h5(w)) + "  " + bitArray.get(Math.abs(h5(w))));
+//				System.out.println("h6: " + Math.abs(h6(w)) + "  " + bitArray.get(Math.abs(h6(w))));
+//			System.out.println("");
+			
 		} 
-		catch (IndexOutOfBoundsException e)
+		catch (IndexOutOfBoundsException exc)
 		{
-			System.out.println(e);
+			System.out.println(exc);
 		}
+		
+		a = Math.abs(h1(w));
+		b = Math.abs(h2(w));
+		c = Math.abs(h3(w));
+		d = Math.abs(h4(w));
+		e = Math.abs(h5(w));
+		f = Math.abs(h6(w));
+
+		if(a == b)
+			System.out.println("hash collision a  b  " + w);
+		else if(a == c)
+			System.out.println("hash collision a  c  " + w);
+		else if(a == d)
+			System.out.println("hash collision a  d  " + w);
+		else if(a == e)
+			System.out.println("hash collision a  e  " + w);
+		else if(a == f)
+			System.out.println("hash collision a  f  " + w);
+		else if(b == c)
+			System.out.println("hash collision b  c  " + w);
+		else if(b == d)
+			System.out.println("hash collision b  d  " + w);
+		else if(b == e)
+			System.out.println("hash collision b  e  " + w);
+		else if(b == f)
+			System.out.println("hash collision b  f  " + w);
+		else if(c == d)
+			System.out.println("hash collision c  d  " + w);
+		else if(c == e)
+			System.out.println("hash collision c  e  " + w);
+		else if(c == f)
+			System.out.println("hash collision c  f  " + w);
+		else if(d == e)
+			System.out.println("hash collision d  e  " + w);
+		else if(d == f)
+			System.out.println("hash collision d  f  " + w);
+		else if(e == f)
+			System.out.println("hash collision e  f  " + w);
+			
 	}
 	
 	
@@ -126,15 +176,15 @@ public class BloomFilter
 	{
 		if(!bitArray.get(Math.abs(h1(w)), w))
 			return false;
-		else if(!bitArray.get(Math.abs(h1(w))))
+		else if(!bitArray.get(Math.abs(h2(w))))
 			return false;
-		else if(!bitArray.get(Math.abs(h1(w))))
+		else if(!bitArray.get(Math.abs(h3(w))))
 			return false;
-		else if(!bitArray.get(Math.abs(h1(w))))
+		else if(!bitArray.get(Math.abs(h4(w))))
 			return false;
-		else if(!bitArray.get(Math.abs(h1(w))))
+		else if(!bitArray.get(Math.abs(h5(w))))
 			return false;
-		else if(!bitArray.get(Math.abs(h1(w))))
+		else if(!bitArray.get(Math.abs(h6(w))))
 			return false;
 		else
 			return true;
@@ -160,7 +210,7 @@ public class BloomFilter
 	
 	public double accuracy()
 	{
-		return Math.pow(1 - Math.exp((-1*(long)NUM_HASH*(long)NUM_WORDS)/(long)numBits), (long)NUM_HASH);
+		return Math.pow(1 - Math.exp(NUM_HASH*NUM_WORDS*-1/(double)numBits), NUM_HASH);
 	}
 	
 }
