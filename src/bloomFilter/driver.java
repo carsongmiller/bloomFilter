@@ -6,12 +6,15 @@ public class driver {
 
 	public static void main(String[] args) throws IOException
 	{
-		int M = 5100; //want M to be prime
+		int M = 1000000; //want M to be prime
 		BloomFilter bloom = new BloomFilter(M);
 		bloom.populateBitArray("basic.txt");
-		String check = "rash";
+		String check = "sheepers";
 		if(bloom.isIn(check))
-			System.out.println(check + " is a valid word.  Probability of error " + bloom.accuracy());
+		{
+			System.out.println(check + " is a valid word");
+			System.out.println("Probability of error " + bloom.accuracy());
+		}
 		else
 			System.out.println(check + " is not a valid word");
 		//System.out.println(bloom.accuracy());
