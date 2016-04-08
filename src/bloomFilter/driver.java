@@ -7,8 +7,9 @@ public class driver {
 	public static void main(String[] args) throws IOException
 	{
 		int M = 1000000; //want M to be prime
+		String fileName = "basic.txt"; //name of word list file
 		BloomFilter bloom = new BloomFilter(M);
-		bloom.populateBitArray("basic.txt");
+		bloom.populateBitArray(fileName);
 		String check = "sheepers";
 		if(bloom.isIn(check))
 		{
