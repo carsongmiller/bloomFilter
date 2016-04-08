@@ -62,7 +62,6 @@ public class BitArray
 		{
 			int m = 1;
 			m = m << (31-(n%32));
-			//System.out.println(n + "\t" + m);
 			b[n/32] = b[n/32] | m;
 		}
 	}
