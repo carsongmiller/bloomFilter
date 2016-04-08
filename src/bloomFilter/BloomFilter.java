@@ -19,6 +19,76 @@ public class BloomFilter
 	
 	
 	
+	public void populateBitArray(String fileName)
+	{
+		String word = null;
+		String dir = System.getProperty("user.dir") + "\\" + fileName; //get directory of basic.txt
+		LineReader lineReader = new LineReader(dir);
+		
+		while(lineReader.hasNext())
+		{
+			NUM_WORDS++;
+			word = lineReader.next();
+			add(word);					
+		}
+	}
+	
+	
+	
+	public void add(String w)
+	{
+		//run word through hash functions and set appropriate bits in b[]
+		try
+		{
+			bitArray.set(Math.abs(h1(w)));		//hash 1
+			bitArray.set(Math.abs(h2(w)));		//hash 2
+			bitArray.set(Math.abs(h3(w)));		//hash 3
+			bitArray.set(Math.abs(h4(w)));		//hash 4
+			bitArray.set(Math.abs(h5(w)));		//hash 5
+			bitArray.set(Math.abs(h6(w)));		//hash 6			
+		} 
+		catch (IndexOutOfBoundsException e)
+		{
+			System.out.println(e);
+		}
+	}
+	
+	
+	
+	public boolean isIn(String w)
+	{
+		if
+		(
+			bitArray.get(Math.abs(h1(w))) &&
+			bitArray.get(Math.abs(h2(w))) &&
+			bitArray.get(Math.abs(h3(w))) &&
+			bitArray.get(Math.abs(h4(w))) &&
+			bitArray.get(Math.abs(h5(w))) &&
+			bitArray.get(Math.abs(h6(w)))
+		)
+			return true;
+		
+		else
+			return false;
+	}
+	
+	
+	
+	public double accuracy()
+	{
+		return Math.pow(1 - Math.exp(NUM_HASH*NUM_WORDS*-1/(double)numBits), NUM_HASH);
+	}
+	
+	
+	
+/*
+ * ======================================
+ * 
+ * Hash Functions
+ * 
+ * ======================================
+ */
+	
 	public int h1(String word) //simply using Java's hashCode() method
 	{
 		return word.hashCode() % numBits;
@@ -40,6 +110,8 @@ public class BloomFilter
 	
 	public int h3(String word)
 	{
+		//This hash function runs in O(1) time rather than O(n) that was specified by the project description
+		//I figured this wouldn't pose any issues, but I thought I would make a comment just in case
 		int primeSet[] = 
 			{
 					2, 3, 5, 7, 11, 13, 17, 19, 
@@ -58,7 +130,8 @@ public class BloomFilter
 		return (word.charAt(0) * word.charAt(word.length()-1) * primeSet[word.length() % primeSet.length]) % numBits;
 	}
 	
-	
+	//h4-h6 are essentially the same hash function, but using different large primes
+	//Through testing, I found this to produce no greater number of collisions than with the other hash functions
 	
 	public int h4(String word)
 	{
@@ -98,69 +171,5 @@ public class BloomFilter
 			h = (h*A) ^ (word.charAt(i) * B);
 		
 		return h  % numBits;
-	}
-	
-	
-	
-	public void add(String w)
-	{
-		//run word through hash functions and set appropriate bits in b[]
-		try
-		{
-			bitArray.set(Math.abs(h1(w)));		//hash 1
-			bitArray.set(Math.abs(h2(w)));		//hash 2
-			bitArray.set(Math.abs(h3(w)));		//hash 3
-			bitArray.set(Math.abs(h4(w)));		//hash 4
-			bitArray.set(Math.abs(h5(w)));		//hash 5
-			bitArray.set(Math.abs(h6(w)));		//hash 6			
-		} 
-		catch (IndexOutOfBoundsException e)
-		{
-			System.out.println(e);
-		}
-	}
-	
-	
-	
-	public boolean isIn(String w)
-	{
-		if(!bitArray.get(Math.abs(h1(w)), w))
-			return false;
-		else if(!bitArray.get(Math.abs(h2(w))))
-			return false;
-		else if(!bitArray.get(Math.abs(h3(w))))
-			return false;
-		else if(!bitArray.get(Math.abs(h4(w))))
-			return false;
-		else if(!bitArray.get(Math.abs(h5(w))))
-			return false;
-		else if(!bitArray.get(Math.abs(h6(w))))
-			return false;
-		else
-			return true;
-	}
-	
-	
-	
-	public void populateBitArray(String fileName)
-	{
-		String word = null;
-		String dir = System.getProperty("user.dir") + "\\" + fileName; //get directory of basic.txt
-		LineReader lineReader = new LineReader(dir);
-		
-		while(lineReader.hasNext())
-		{
-			NUM_WORDS++;
-			word = lineReader.next();
-			add(word);					
-		}
-	}
-	
-	
-	
-	public double accuracy()
-	{
-		return Math.pow(1 - Math.exp(NUM_HASH*NUM_WORDS*-1/(double)numBits), NUM_HASH);
-	}
-	
+	}	
 }

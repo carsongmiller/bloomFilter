@@ -35,24 +35,6 @@ public class BitArray
 	
 	
 	
-	public boolean get(int n, String w) //returns value of bit in bloom filter at index 1
-	{
-		if(n < 0 || n >= numBits)
-			throw new IndexOutOfBoundsException("Index: " + n + " Word: " + w);
-		
-		else
-		{
-			int m = 1;
-			m = m << (31-(n%32));
-			if((m & b[n/32]) != 0)
-				return true;
-			else
-				return false;
-		}
-	}
-	
-	
-	
 	public void set(int n) //sets bit in bloom filter at index n to 1
 	{
 		if(n < 0 || n >= numBits)
@@ -64,22 +46,5 @@ public class BitArray
 			m = m << (31-(n%32));
 			b[n/32] = b[n/32] | m;
 		}
-	}
-	
-	
-	
-	public int set(int n, String str) //set() overloaded for debugging
-	{
-		if(n < 0 || n >= numBits)
-			throw new IndexOutOfBoundsException("Index: " + n + ", Word: " + str);
-		
-		else
-		{
-			int m = 1;
-			m = m << (31-(n%32));
-			b[n/32] = b[n/32] | m;
-		}
-		
-		return n;
 	}
 }
